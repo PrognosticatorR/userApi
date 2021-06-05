@@ -1,18 +1,19 @@
-version: '3.7'
+version: '3.8'
 services:
     test_server:
         container_name: test-server
         build:
             context: .
-        volumes:
-            - /app/node_modules
-            - ./:/app
+            dockerfile: Dockerfile.dev
         environment:
             - NODE_ENV=${NODE_ENV}
             - PORT=${PORT}
             - MONGO_URI=${MONGO_URI}
             - MONGO_REMOTE_URI=${MONGO_REMOTE_URI}
             - JWT_KEY=${JWT_KEY}
+            - secretAccessKey=${secretAccessKey}
+            - accessKeyId=${accessKeyId}
+            - bucket=${bucket}
         ports:
             - 3000:3000
         restart: unless-stopped

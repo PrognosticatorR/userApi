@@ -1,6 +1,5 @@
 const express = require('express');
-const { json } = require('body-parser');
-const cookieSession = require('cookie-session');
+const { json, urlencoded } = require('body-parser');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -25,6 +24,7 @@ app.use(helmet());
 app.use(cors());
 app.use(apiLimiter);
 app.use(json());
+app.use(urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(authRouter);
@@ -33,7 +33,5 @@ app.use(postRouter);
 app.all('*', async (req, res) => {
     res.status(404).send('you lost, contact support!!');
 });
-
-// app.use(errorHandler);
 
 module.exports = app;

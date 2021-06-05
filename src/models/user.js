@@ -45,7 +45,7 @@ userSchema
     .virtual('password')
     .set(function (password) {
         this._password = password;
-        this.hashed_password = this.encryptPassword(password, this.salt);
+        this.hashed_password = this.encryptPassword(password);
     })
     .get(function () {
         return this._password;
@@ -55,10 +55,11 @@ userSchema.methods = {
     authenticate: function (palinText) {
         return bcrypt.compareSync(palinText, this.hashed_password);
     },
-    encryptPassword: function (password, salt) {
+    encryptPassword: function (password) {
         if (!password) return '';
         try {
-            return bcrypt.hashSync(password, 10);
+            let salt = bcrypt.genSaltSync(10);
+            return bcrypt.hashSync(password, salt);
         } catch (error) {
             return '';
         }
